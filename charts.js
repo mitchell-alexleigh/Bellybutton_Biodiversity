@@ -67,12 +67,12 @@ function buildCharts(sample) {
       //console.log(result)
 
     // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
-    var otu_ids = result.otu_ids.toString()
-      console.log('otu_ids : '+otu_ids.slice(0,10))
+    var otu_ids = result.otu_ids
+      //console.log('otu_ids : '+otu_ids)
     var otu_labels = result.otu_labels
-      console.log('otu_labels : '+otu_labels.slice(0,10))
+      //console.log('otu_labels : '+otu_labels.slice(0,10))
     var sample_values = result.sample_values
-  console.log('sample_values : '+sample_values.slice(0,10))
+  //console.log('sample_values : '+sample_values.slice(0,10))
 
     
 
@@ -80,25 +80,48 @@ function buildCharts(sample) {
     // Hint: Get the the top 10 otu_ids and map them in descending order  
     //  so the otu_ids with the most bacteria are last. 
   
-    var yticks = otu_ids.slice(0,10);
-      //console.log('sortedSamples '+top_10_otu_ids)
+    var yticks = otu_ids.map(otu_ids => 'OTU ID '+ otu_ids).slice(0,10);
+      console.log('yticks '+yticks)
 
     // 8. Create the trace for the bar chart. 
     var barData = [{
-      x: sample_values.slice(0,10),
-      y: otu_ids.slice(0,10),
-      text: otu_labels.slice(0,10),
-      type: "bar",
+      type: 'bar',
+      x: sample_values,
+      y: yticks,
+      text: otu_labels,
       orientation: 'h',
-      }];
+      transforms: [{
+        type: 'sort',
+        target: 'x',
+        order: 'decsending'
+      }]
+    }];
     // 9. Create the layout for the bar chart. 
-    var barLayout = {
+    var barLayout = [{
       title: "Top 10 Bacteria Foung",
       xaxis: { title: "Bacteria"},
-      yaxis: { title: "ID", tickvals: yticks},
-      
-    };
+      yaxis: { 
+        title: "ID" ,
+        tickvals: [ 1 ],
+        ticktext: yticks 
+      }
+    }];
     // 10. Use Plotly to plot the data with the layout. 
     Plotly.newPlot("bar", barData, barLayout )
+
+    
+//
+/* Plotly.newPlot('bar', [{
+  type: 'bar',
+  x: sample_values,
+  y: otu_ids.toString(),
+  orientation: 'h',
+  transforms: [{
+    type: 'sort',
+    target: 'x',
+    order: 'decsending'
+  }]
+}]) */
+
   });
 }
