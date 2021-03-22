@@ -109,19 +109,6 @@ function buildCharts(sample) {
     // 10. Use Plotly to plot the data with the layout. 
     Plotly.newPlot("bar", barData, barLayout )
 
-    
-//
-/* Plotly.newPlot('bar', [{
-  type: 'bar',
-  x: sample_values,
-  y: otu_ids.toString(),
-  orientation: 'h',
-  transforms: [{
-    type: 'sort',
-    target: 'x',
-    order: 'decsending'
-  }]
-}]) */
 
   });
 }
