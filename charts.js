@@ -74,6 +74,7 @@ function buildCharts(sample) {
     var sample_values = result.sample_values
   //console.log('sample_values : '+sample_values.slice(0,10))
 
+  
     
 
     // 7. Create the yticks for the bar chart.
@@ -81,7 +82,7 @@ function buildCharts(sample) {
     //  so the otu_ids with the most bacteria are last. 
   
     var yticks = otu_ids.map(otu_ids => 'OTU ID '+ otu_ids).slice(0,10);
-      console.log('yticks '+yticks)
+      //console.log('yticks '+yticks)
 
     // 8. Create the trace for the bar chart. 
     var barData = [{
@@ -138,6 +139,48 @@ function buildCharts(sample) {
 
     // 3. Use Plotly to plot the data with the layout.
     Plotly.newPlot("bubble", bubbleData, bubbleLayout )
-  });
 
+    var metadata = data.metadata;
+    // Filter the data for the object with the desired sample number
+    var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
+    var result = resultArray[0];
+   
+
+    // 3. Create a variable that holds the washing frequency.
+    var washing_frequency = result.wfreq
+    //console.log(washing_frequency)
+
+    // 4. Create the trace for the gauge chart.
+    var gaugeData = [{
+
+      value: washing_frequency,
+      title: { text: "Scrubs per Week" },
+      type: "indicator",
+      mode: "gauge+number",
+      gauge: {
+        axis: { range: [null, 10], tickwidth: 1 },
+        bar: { color: "black" },
+        bgcolor: "white",
+        borderwidth: 2,
+        bordercolor: "gray",
+        steps: [
+          { range: [0, 2], color: "red" },
+          { range: [2, 4], color: "orange" },
+          { range: [4, 6], color: "yellow" },
+          { range: [6, 8], color: "lightgreen" },
+          { range: [8, 10], color: "darkgreen" }
+        ]
+      }
+    }];
+    
+    // 5. Create the layout for the gauge chart.
+    var gaugeLayout = { 
+      title: "Washing Frequency"
+
+    };
+
+    // 6. Use Plotly to plot the gauge data and layout.
+    Plotly.newPlot("gauge", gaugeData, gaugeLayout )
+
+  });
 }
